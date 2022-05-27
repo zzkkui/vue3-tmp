@@ -19,12 +19,14 @@
     "experimentalDecorators": true,
     "lib": [
       "dom",
+      "DOM.Iterable",
       "esnext"
     ],
     "noImplicitAny": false,
     "skipLibCheck": true,
     "types": [
-      "vite/client"
+      "vite/client",
+      "node"
     ],
     "removeComments": true,
     "paths": {

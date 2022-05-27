@@ -15,6 +15,8 @@ declare interface ViteEnv {
   VITE_LEGACY: boolean;
   VITE_USE_IMAGEMIN: boolean;
   VITE_GENERATE_UI: string;
+  VITE_USE_SPRITE: boolean;
+  VITE_USE_AUTOIMPORT: boolean;
 }
 
 declare module '*.vue' {
@@ -33,3 +35,9 @@ declare module 'virtual:*' {
   const result: any;
   export default result;
 }
+
+declare module 'virtual:generated-layouts' {
+  export { setupLayouts };
+}
+
+declare type TimeoutHandle = ReturnType<typeof setTimeout>;

@@ -1,6 +1,7 @@
 import type { PluginOption } from 'vite';
 import compressPlugin from 'vite-plugin-compression';
 
+// 打包压缩
 export function configCompressPlugin(
   compress: 'gzip' | 'brotli' | 'none',
   deleteOriginFile = false,

@@ -1,12 +1,8 @@
+import path from 'path';
 import type { UserConfig, ConfigEnv } from 'vite';
 import { loadEnv } from 'vite';
-import { resolve } from 'path';
 import { wrapperEnv } from './build/utils';
 import { createVitePlugins } from './build/vite/plugin';
-
-function pathResolve(dir: string) {
-  return resolve(process.cwd(), '.', dir);
-}
 
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   const root = process.cwd();
@@ -24,20 +20,19 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     root,
     resolve: {
       alias: [
-        // /@/xxxx => src/xxxx
+        // @/xxxx => src/xxxx
         {
-          find: /\/@\//,
-          replacement: pathResolve('src') + '/',
+          find: 'src',
+          replacement: path.resolve(__dirname, './src'),
         },
         // /#/xxxx => types/xxxx
         {
-          find: /\/#\//,
-          replacement: pathResolve('types') + '/',
+          find: 'types',
+          replacement: path.resolve(__dirname, './types'),
         },
       ],
     },
     server: {
-      https: true,
       // Listening on all local IPs
       host: true,
       port: 9001,
@@ -74,8 +69,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
 
     css: {
-      modules: {
-        scopeBehaviour: 'local',
+      preprocessorOptions: {
+        less: {
+          javascriptEnabled: true,
+        },
       },
     },
 

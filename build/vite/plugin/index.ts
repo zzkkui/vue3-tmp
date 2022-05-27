@@ -8,11 +8,23 @@ import { configMockPlugin } from './mock';
 import { configCompressPlugin } from './compress';
 import { configStyleImportPlugin } from './styleImport';
 import { configVisualizerConfig } from './visualizer';
-// import { configImageminPlugin } from "./imagemin";
-import { configSvgIconsPlugin } from './svgSprite';
+import createAutoImport from './autoImport';
+import createComponents from './components';
+import createRestart from './restart';
+import createSpritesmith from './spritesmith';
+import createPages from './pages';
+import createLayouts from './layouts';
+import createIcon from './icon';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
-  const { VITE_USE_MOCK, VITE_LEGACY, VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE } = viteEnv;
+  const {
+    VITE_USE_MOCK,
+    VITE_LEGACY,
+    VITE_BUILD_COMPRESS,
+    VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE,
+    VITE_USE_SPRITE,
+    VITE_USE_AUTOIMPORT,
+  } = viteEnv;
 
   const vitePlugins: (PluginOption | PluginOption[])[] = [
     // have to
@@ -29,11 +41,23 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   // vite-plugin-html
   vitePlugins.push(configHtmlPlugin(viteEnv, isBuild));
 
-  // vite-plugin-svg-icons
-  vitePlugins.push(configSvgIconsPlugin(isBuild));
+  // unplugin-icons
+  vitePlugins.push(createIcon());
 
   // vite-plugin-mock
   VITE_USE_MOCK && vitePlugins.push(configMockPlugin(isBuild));
+
+  // unplugin-auto-import
+  VITE_USE_AUTOIMPORT && vitePlugins.push(createAutoImport());
+
+  // unplugin-vue-components
+  VITE_USE_AUTOIMPORT && vitePlugins.push(createComponents());
+
+  // vite-plugin-restart
+  vitePlugins.push(createRestart());
+
+  // vite-plugin-spritesmith
+  VITE_USE_SPRITE && vitePlugins.push(createSpritesmith(isBuild));
 
   // vite-plugin-style-import
   vitePlugins.push(configStyleImportPlugin(isBuild));
@@ -41,11 +65,14 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   // rollup-plugin-visualizer
   vitePlugins.push(configVisualizerConfig());
 
+  // vite-plugin-pages
+  vitePlugins.push(createPages());
+
+  // vite-plugin-vue-layouts
+  vitePlugins.push(createLayouts());
+
   // The following plugins only work in the production environment
   if (isBuild) {
-    // vite-plugin-imagemin
-    // VITE_USE_IMAGEMIN && vitePlugins.push(configImageminPlugin());
-
     // rollup-plugin-gzip
     vitePlugins.push(configCompressPlugin(VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE));
   }
