@@ -41,3 +41,12 @@ declare module 'virtual:generated-layouts' {
 }
 
 declare type TimeoutHandle = ReturnType<typeof setTimeout>;
+
+declare type Nullable<T> = T | null;
+
+declare interface Window {
+  TOP_PUBLIC: Record<string, string>;
+  PUBLIC: Record<string, string>;
+}
+
+declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>;

@@ -5,13 +5,13 @@ import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router
 // vite-plugin-pages 自动生成的路由
 import autoBasicRoutes from 'virtual:generated-pages';
 import { setupLayouts } from 'virtual:generated-layouts';
+
 import { basicRoutes } from './routes';
-import NotFound from 'src/components/[...404].vue';
+import { createGuard } from './guard';
 
 const isUseHash = import.meta.env.VITE_APP_HTTP_ENV === 'hash';
 
 export function createRoutes(routes: RouteRecordRaw[]): RouteRecordRaw[] {
-  routes.push({ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound, meta: { layout: 'RouterView' } });
   return setupLayouts(routes);
 }
 
@@ -27,11 +27,10 @@ getRouteNames(basicRoutes);
 
 // app router
 export const router = createRouter({
-  // history: createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH),
   history: isUseHash
     ? createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH)
     : createWebHistory(import.meta.env.VITE_PUBLIC_PATH || '/'),
-  routes: routes,
+  routes: routes as RouteRecordRaw[],
   strict: true,
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
@@ -49,5 +48,6 @@ export function resetRouter() {
 // config router
 export async function setupRouter(app: App<Element>) {
   app.use(router);
+  createGuard(router);
   await router.isReady();
 }

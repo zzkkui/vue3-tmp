@@ -1,28 +1,18 @@
 import type { Router } from 'vue-router';
-import { useAppStoreWithOut } from 'src/store/modules/app';
-import projectSetting from 'src/settings/projectSetting';
-// import { useUserStoreWithOut } from '/@/store/modules/user';
-// import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting';
-// import { AxiosCanceler } from '/@/utils/http/axios/axiosCancel';
 import { Modal, notification } from 'ant-design-vue';
-// import { warn } from '/@/utils/log';
-// import { unref } from 'vue';
-// import { setRouteChange } from '/@/logics/mitt/routeChange';
-// import { createPermissionGuard } from './permissionGuard';
-// import { createStateGuard } from './stateGuard';
-// import nProgress from 'nprogress';
-// import projectSetting from '/@/settings/projectSetting';
-// import { createParamMenuGuard } from './paramMenuGuard';
+import { useAppStoreWithOut } from 'src/store/modules/app';
+import projectSetting from 'src/projectSetting';
+import { AxiosCanceler } from 'src/utils/axios/axiosCancel';
+import { createPermissionGuard } from './permissionGuard';
 
 // Don't change the order of creation
 export function createGuard(router: Router) {
   createPageGuard(router);
   createPageLoadingGuard(router);
-  // createHttpGuard(router);
+  createHttpGuard(router);
   createMessageGuard(router);
-  // createPermissionGuard(router);
-  // createParamMenuGuard(router); // must after createPermissionGuard (menu has been built.)
-  // createStateGuard(router);
+  createPermissionGuard(router);
+  createStateGuard(router);
 }
 
 function createPageGuard(router: Router) {
@@ -65,27 +55,26 @@ function createPageLoadingGuard(router: Router) {
 }
 
 /**
- * The interface used to close the current page to complete the request when the route is switched
  * @param router
  */
-// function createHttpGuard(router: Router) {
-//   const { removeAllHttpPending } = projectSetting;
-//   let axiosCanceler: Nullable<AxiosCanceler>;
-//   if (removeAllHttpPending) {
-//     axiosCanceler = new AxiosCanceler();
-//   }
-//   router.beforeEach(async () => {
-//     // Switching the route will delete the previous request
-//     axiosCanceler?.removeAllPending();
-//     return true;
-//   });
-// }
+function createHttpGuard(router: Router) {
+  // 路由跳转后是否取消所有 pending ajax
+  const { removeAllHttpPending } = projectSetting;
+  let axiosCanceler: Nullable<AxiosCanceler>;
+  if (removeAllHttpPending) {
+    axiosCanceler = new AxiosCanceler();
+  }
+  router.beforeEach(async () => {
+    axiosCanceler?.removeAllPending();
+    return true;
+  });
+}
 
 /**
- * Used to close the message instance when the route is switched
  * @param router
  */
 export function createMessageGuard(router: Router) {
+  // 路由跳转后是否销毁所有 弹窗
   const { closeMessageOnSwitch } = projectSetting;
 
   router.beforeEach(async () => {
@@ -98,5 +87,13 @@ export function createMessageGuard(router: Router) {
       console.warn('message guard error:' + error);
     }
     return true;
+  });
+}
+
+export function createStateGuard(router: Router) {
+  router.afterEach((to) => {
+    // 跳转到登录页需要清掉的一些数据
+    if (to.path === '/login') {
+    }
   });
 }
