@@ -1,12 +1,22 @@
+import { AppRouteModule } from './../../router/interface';
 import { defineStore } from 'pinia';
 import { store } from 'src/store';
 import { resetRouter } from 'src/router';
+
+export type BreadCrumbType = {
+  prev?: string;
+  paths?: { name: string; path?: string }[];
+};
 
 interface AppState {
   // Page loading status
   pageLoading: boolean;
   // 是否已经动态加载路由
   isDynamicAddedRoute: boolean;
+  hasPermissionRouter: AppRouteModule[];
+  hideHeader: boolean;
+  hideBreadCrumb: boolean;
+  breadCrumbs: BreadCrumbType[];
 }
 let timeId: TimeoutHandle;
 export const useAppStore = defineStore({
@@ -14,6 +24,10 @@ export const useAppStore = defineStore({
   state: (): AppState => ({
     pageLoading: false,
     isDynamicAddedRoute: false,
+    hasPermissionRouter: [],
+    hideHeader: false,
+    hideBreadCrumb: true,
+    breadCrumbs: [],
   }),
   getters: {
     getPageLoading(): boolean {
@@ -21,6 +35,9 @@ export const useAppStore = defineStore({
     },
     getIsDynamicAddedRoute(): boolean {
       return this.isDynamicAddedRoute;
+    },
+    getHasPermissionRouter(): AppRouteModule[] {
+      return this.hasPermissionRouter;
     },
   },
   actions: {
@@ -30,6 +47,10 @@ export const useAppStore = defineStore({
 
     setDynamicAddedRoute(added: boolean) {
       this.isDynamicAddedRoute = added;
+    },
+
+    setHasPermissionRouter(router: AppRouteModule[]) {
+      this.hasPermissionRouter = router;
     },
 
     async resetAllState() {

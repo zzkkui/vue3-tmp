@@ -6,10 +6,18 @@ export type Component<T = any> =
   | (() => Promise<typeof import('*.vue')>)
   | (() => Promise<T>);
 
+export interface CusRouteMeta extends RouteMeta {
+  title?: string;
+  hideBreadcrumb?: boolean;
+  hideMenu?: boolean;
+  orderNo?: number;
+  icon?: string | JSX.Element;
+}
+
 // @ts-ignore
 export interface AppRouteModule extends Omit<RouteRecordRaw, 'meta'> {
   name: string;
-  meta: RouteMeta;
+  meta: CusRouteMeta;
   component?: Component | string;
   components?: Component;
   children?: AppRouteModule[];

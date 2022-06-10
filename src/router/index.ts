@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type { Router, RouteRecordRaw } from 'vue-router';
 import type { App } from 'vue';
 
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
@@ -8,6 +8,7 @@ import { setupLayouts } from 'virtual:generated-layouts';
 
 import { basicRoutes } from './routes';
 import { createGuard } from './guard';
+import { AppRouteModule } from './interface';
 
 const isUseHash = import.meta.env.VITE_APP_HTTP_ENV === 'hash';
 

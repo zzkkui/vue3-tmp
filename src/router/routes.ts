@@ -12,7 +12,6 @@ Object.keys(modules).forEach((key) => {
 });
 
 export const asyncRoutes = [...routeModuleList];
-console.log(asyncRoutes);
 
 export const RootRoute: AppRouteModule = {
   path: '/',
@@ -29,6 +28,7 @@ export const LoginRoute: AppRouteModule = {
   component: () => import('src/pages/login/index.vue'),
   meta: {
     title: '登录',
+    hideMenu: true,
   },
 };
 

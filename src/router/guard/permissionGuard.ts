@@ -1,3 +1,4 @@
+import { AppRouteModule } from './../interface';
 import { useAppStoreWithOut } from 'src/store/modules/app';
 import type { Router, RouteRecordRaw } from 'vue-router';
 import { asyncRoutes, PAGE_NOT_FOUND_ROUTE } from './../routes';
@@ -7,8 +8,10 @@ export function createPermissionGuard(router: Router) {
   const appStore = useAppStoreWithOut();
   router.beforeEach(async (to, from, next) => {
     const routes = asyncRoutes;
+    const hasPermissionRouter: AppRouteModule[] = [];
     routes.forEach((route) => {
       router.addRoute(route as unknown as RouteRecordRaw);
+      hasPermissionRouter.push(route);
     });
 
     if (appStore.getIsDynamicAddedRoute) {
@@ -17,6 +20,7 @@ export function createPermissionGuard(router: Router) {
     }
 
     appStore.setDynamicAddedRoute(true);
+    appStore.setHasPermissionRouter(hasPermissionRouter);
 
     if (to.name === PAGE_NOT_FOUND_ROUTE.name) {
       next({ path: to.fullPath, replace: true, query: to.query });

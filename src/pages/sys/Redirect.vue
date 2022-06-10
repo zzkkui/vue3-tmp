@@ -5,6 +5,7 @@
   import { unref } from 'vue';
   import { useRouter } from 'vue-router';
 
+  debugger;
   const { currentRoute, replace } = useRouter();
 
   const { params, query } = unref(currentRoute);

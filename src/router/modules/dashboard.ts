@@ -8,6 +8,7 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   meta: {
     // orderNo menu 排序字段
+    // 在菜单展示必须需要，没有默认 0
     orderNo: 10,
     icon: 'ion:grid-outline',
     title: '首页',
