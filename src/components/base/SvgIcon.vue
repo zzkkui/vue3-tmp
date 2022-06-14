@@ -15,7 +15,6 @@
     // 内网情况下下载到本地
     scriptUrl: '//at.alicdn.com/t/font_3432582_grev41s0tf.js', // 在 iconfont.cn 上生成
   });
-
   const props = defineProps({
     name: {
       type: String,

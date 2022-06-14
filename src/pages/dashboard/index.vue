@@ -2,7 +2,7 @@
   <div>
     dashboard
     <AButton type="primary">Primary Button</AButton>
-    <SvgIcon name="icon-weixiu"></SvgIcon>
+    <SvgIcon name="icon-weixiu" />
     <IAntDesignAccountBookOutlined />
     <ISvgYinsi />
   </div>

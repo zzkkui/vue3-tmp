@@ -12,11 +12,22 @@ function generateMenus(router): Menu[] {
   return router.map((n) => {
     const { name, meta, children, path } = n;
     const { title, icon } = meta;
+    // 如果有 children 但是只有 一条数据 且 没有 path
+    if (children && children.length === 1 && !children[0].path) {
+      const child = children[0];
+      return {
+        name,
+        path,
+        title,
+        icon,
+        ...(child.meta || {}),
+      };
+    }
     let _children;
     if (children) {
       _children = generateMenus(children);
     }
-    // if(!path)
+
     return {
       name,
       path,

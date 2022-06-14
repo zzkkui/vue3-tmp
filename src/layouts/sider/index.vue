@@ -22,7 +22,7 @@
             </AMenuItem>
           </template>
           <template v-else>
-            <SubMenu :menu-info="menu" :key="menu.key" />
+            <SubMenu :menu-info="menu" :key="menu.path" />
           </template>
         </template>
       </AMenu>
@@ -66,7 +66,7 @@
 
   // const { menus } = props;
 
-  // console.log(props.menus);
+  console.log(props.menus);
 </script>
 
 <style lang="less" scoped>
