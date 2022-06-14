@@ -16,6 +16,7 @@ function generateMenus(router): Menu[] {
     if (children) {
       _children = generateMenus(children);
     }
+    // if(!path)
     return {
       name,
       path,

@@ -3,20 +3,12 @@ import { defineStore } from 'pinia';
 import { store } from 'src/store';
 import { resetRouter } from 'src/router';
 
-export type BreadCrumbType = {
-  prev?: string;
-  paths?: { name: string; path?: string }[];
-};
-
 interface AppState {
   // Page loading status
   pageLoading: boolean;
   // 是否已经动态加载路由
   isDynamicAddedRoute: boolean;
   hasPermissionRouter: AppRouteModule[];
-  hideHeader: boolean;
-  hideBreadCrumb: boolean;
-  breadCrumbs: BreadCrumbType[];
 }
 let timeId: TimeoutHandle;
 export const useAppStore = defineStore({
@@ -25,9 +17,6 @@ export const useAppStore = defineStore({
     pageLoading: false,
     isDynamicAddedRoute: false,
     hasPermissionRouter: [],
-    hideHeader: false,
-    hideBreadCrumb: true,
-    breadCrumbs: [],
   }),
   getters: {
     getPageLoading(): boolean {
