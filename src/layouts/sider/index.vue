@@ -11,13 +11,16 @@
         <IAntDesignMenuUnfoldOutlined v-if="collapsed" class="trigger" />
         <IAntDesignMenuFoldOutlined v-else class="trigger" />
       </div>
-      <AMenu v-model:openKeys="menuState.openKeys" v-model:selectedKeys="menuState.selectedKeys">
+      <AMenu v-model:openKeys="menuState.openKeys" v-model:selectedKeys="menuState.selectedKeys" mode="inline">
         <template v-for="menu in menus || []" :key="menu.path || menu.name">
           <template v-if="!menu.children">
             <AMenuItem :key="menu.name">
-              <!-- <template #icon v-if="menu.icon">
-                <SvgIcon :name="menu.icon"></SvgIcon>
-              </template> -->
+              <!-- <IAntDesignHomeOutlined /> -->
+              <template #icon v-if="menu.icon">
+                <CIcon :icon="menu.icon" :style="{ color: 'red' }" />
+                <!-- {{ getMenuIcon(menu.icon) }} -->
+                <!-- <AntdIcon type="DashboardOutlined" /> -->
+              </template>
               {{ menu.title }}
             </AMenuItem>
           </template>
@@ -32,10 +35,12 @@
 
 <script lang="ts" setup>
   import type { Menu } from 'src/hooks/useMenu';
-  import { PropType } from 'vue';
+  import { KeepAlive, PropType } from 'vue';
   import { useCommonStore } from 'src/store/modules/common';
   import { Layout } from 'ant-design-vue';
+  import * as $Icon from '@ant-design/icons-vue';
   import SubMenu from './Submenu.vue';
+  import CIcon from 'src/components/icon/Icon.tsx';
 
   const Sider = Layout.Sider;
   const DEFALUT_WIDTH = 230;
@@ -64,9 +69,15 @@
     width: DEFALUT_WIDTH,
   });
 
+  // console.log('Icon', MenuIcon);
+
+  // function getMenuIcon(icon) {
+  //   return h($Icon[icon]);
+  // }
+
   // const { menus } = props;
 
-  console.log(props.menus);
+  console.log('menus', props.menus);
 </script>
 
 <style lang="less" scoped>

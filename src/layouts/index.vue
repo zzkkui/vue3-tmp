@@ -22,8 +22,7 @@
   const appStore = useAppStore();
 
   const routes = appStore.getHasPermissionRouter;
-
   const menus = useMenu(routes);
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="less" scoped></style>

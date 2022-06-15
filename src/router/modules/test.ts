@@ -8,7 +8,7 @@ const test: AppRouteModule = {
   meta: {
     // orderNo menu 排序字段
     orderNo: 20,
-    icon: 'ion:grid-outline',
+    icon: 'icon:weixiu',
     title: 'test',
   },
   children: [

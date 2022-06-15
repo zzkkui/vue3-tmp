@@ -1,8 +1,8 @@
 <!-- iconfont.cn 上的自定义图标 -->
 <template>
   <div class="anticon svg-icon" v-if="iconHref">
-    <svg class="icon" aria-hidden="true">
-      <use :xlink:href="iconHref" />
+    <svg class="icon" aria-hidden="true" :style="style">
+      <use :xlink:href="iconHref" fill="#409EFF" />
     </svg>
   </div>
 </template>
@@ -16,16 +16,22 @@
     scriptUrl: '//at.alicdn.com/t/font_3432582_grev41s0tf.js', // 在 iconfont.cn 上生成
   });
   const props = defineProps({
-    name: {
+    type: {
       type: String,
+    },
+    style: {
+      type: Object,
     },
   });
 
   const iconHref = computed(() => {
-    if (props.name && props.name.indexOf('icon') > -1) {
-      return `#${props.name}`;
-    } else if (props.name) {
-      return `#svg-${props.name}`;
+    if (props.type && props.type.indexOf('svg|') > -1) {
+      // 本地 assets/icons 文件内的 svg
+      const type = props.type.split('|')[1];
+      return `#svg-${type}`;
+    } else if (props.type) {
+      // iconfont 上的 icon
+      return `#icon-${props.type}`;
     } else {
       return '';
     }

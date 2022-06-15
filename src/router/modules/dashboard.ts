@@ -4,14 +4,14 @@ import { LAYOUT } from '../contant';
 const dashboard: AppRouteModule = {
   path: '/dashboard',
   name: 'Dashboard',
-  // component: () => import('src/layouts/index.vue'),
   component: LAYOUT,
   meta: {
     // orderNo menu 排序字段
     // 在菜单展示必须需要，没有默认 0
     orderNo: 10,
-    // icon 如果是 antdv 的直接引入组件，如果是自定义icon用字符串
-    icon: 'ion:grid-outline',
+    // antd 自带 'antd:***'
+    // 自定义 icon 'icon:***'  iconfont 中生成的， 'icon:svg|***' 本地 assets/icons 文件内的 svg
+    icon: 'antd:HomeOutlined',
     title: '首页',
   },
   children: [

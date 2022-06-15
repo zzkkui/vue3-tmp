@@ -20,12 +20,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     root,
     resolve: {
       alias: [
-        // @/xxxx => src/xxxx
         {
           find: 'src',
           replacement: path.resolve(__dirname, './src'),
         },
-        // /#/xxxx => types/xxxx
         {
           find: 'types',
           replacement: path.resolve(__dirname, './types'),
@@ -33,7 +31,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       ],
     },
     server: {
-      // Listening on all local IPs
       host: true,
       port: 9001,
       proxy: {
@@ -63,7 +60,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       //     drop_console: VITE_DROP_CONSOLE,
       //   },
       // },
-      // Turning off brotliSize display can slightly reduce packaging time
       brotliSize: false,
       chunkSizeWarningLimit: 2000,
     },
@@ -76,12 +72,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
 
-    // The vite plugin used by the project. The quantity is large, so it is separately extracted and managed
     plugins: createVitePlugins(viteEnv, isBuild),
 
     optimizeDeps: {
-      // @iconify/iconify: The dependency is dynamically and virtually loaded by @purge-icons/generated, so it needs to be specified explicitly
-      include: ['@vue/runtime-core', '@vue/shared'],
+      include: ['@vue/runtime-core', '@vue/shared', '@iconify/iconify', 'ant-design-vue/es/locale/zh_CN'],
     },
   };
 };

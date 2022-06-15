@@ -57,7 +57,6 @@ export const useCommonStore = defineStore({
       this.hideBreadCrumb = hideBreadCrumb;
     },
     setCollapsed(collapsed: boolean) {
-      console.log(111);
       this.collapsed = collapsed;
     },
   },
