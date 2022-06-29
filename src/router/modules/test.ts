@@ -5,6 +5,7 @@ const test: AppRouteModule = {
   path: '/test',
   name: 'Test',
   component: LAYOUT,
+  redirect: '/test/test1',
   meta: {
     // orderNo menu 排序字段
     orderNo: 20,

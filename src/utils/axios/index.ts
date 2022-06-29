@@ -5,16 +5,13 @@ import { VAxios } from './Axios';
 import { isString } from 'src/utils/is';
 import { AxiosTransform, CreateAxiosOptions, RequestOptions, Result } from './interface';
 import { deepMerge } from 'src/utils';
-import { joinTimestamp, formatRequestDate, setObjToUrlParams } from './helper';
+import { joinTimestamp, setObjToUrlParams } from './helper';
 import { ContentTypeEnum } from './enums';
 import { useMessage } from 'src/hooks/useMessage';
 import { AxiosRetry } from './axiosRetry';
 
 const urlPrefix = '/';
 const { createMessage, createErrorModal } = useMessage();
-
-// 不能发送信号的请求
-const blackList: string[] = [];
 
 /**
  * @description: 数据处理，方便区分多种处理方式
@@ -37,7 +34,7 @@ const transform: AxiosTransform = {
       return result;
     }
 
-    let timeoutMsg = description_cn || description;
+    const timeoutMsg = description_cn || description;
 
     // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
@@ -96,19 +93,8 @@ const transform: AxiosTransform = {
   /**
    * @description: 请求拦截器处理
    */
-  requestInterceptors: (config, options) => {
+  requestInterceptors: (config) => {
     // 在发送请求之前做些什么
-    let jump = true;
-    for (let i = 0, len = blackList.length; i < len; i++) {
-      if (!config) break;
-      if (config?.url?.includes(blackList[i])) {
-        jump = false;
-        break;
-      }
-    }
-    if (jump) {
-      window.parent.postMessage('requesting', PUBLIC.URL_CONSOLE);
-    }
     // const token = getToken();
     // if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
     //   // jwt token
@@ -130,8 +116,6 @@ const transform: AxiosTransform = {
    * @description: 响应错误处理
    */
   responseInterceptorsCatch: (_axiosInstance: AxiosResponse, error: any) => {
-    // const errorLogStore = useErrorLogStoreWithOut();
-    // errorLogStore.addAjaxErrorInfo(error);
     const { response, code, message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
     const msg: string = response?.data?.error?.message ?? '';
@@ -164,17 +148,8 @@ const transform: AxiosTransform = {
       case 400:
         errMessage = `${msg}`;
         break;
-      // 401: Not logged in
-      // Jump to the login page if not logged in, and carry the path of the current page
-      // Return to the current page after successful login. This step needs to be operated on the login page.
       case 401:
-        // userStore.setToken(undefined);
         errMessage = '用户没有权限';
-        // if (stp === SessionTimeoutProcessingEnum.PAGE_COVERAGE) {
-        //   userStore.setSessionTimeout(true);
-        // } else {
-        //   userStore.logout(true);
-        // }
         break;
       case 403:
         errMessage = '用户得到授权，但是访问是被禁止的!';

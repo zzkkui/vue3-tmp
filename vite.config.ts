@@ -28,6 +28,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           find: 'types',
           replacement: path.resolve(__dirname, './types'),
         },
+        {
+          find: 'node_modules',
+          replacement: path.resolve(__dirname, './node_modules'),
+        },
       ],
     },
     server: {

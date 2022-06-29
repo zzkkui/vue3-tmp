@@ -5,8 +5,8 @@
 </template>
 
 <script setup>
-  import { useAppStore } from 'src/store/modules/app';
-  const store = useAppStore();
+  import { useCommonStore } from 'src/store/modules/common';
+  const store = useCommonStore();
   const { hideHeader } = storeToRefs(store);
 </script>
 

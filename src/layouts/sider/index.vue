@@ -1,46 +1,49 @@
 <template>
-  <div>
-    <Sider
-      v-model:collapsed="collapsed"
-      :width="siderState.siderWidth"
-      theme="light"
-      class="sider"
-      :style="hideHeader ? { top: 0 } : { top: '50px' }"
+  <Sider :collapsed="collapsed" :width="siderState.siderWidth" theme="light" class="sider" :style="getStyle">
+    <div v-if="collapsible" class="collapse-icon" @click="() => commonStore.setCollapsed(!collapsed)">
+      <IAntDesignMenuUnfoldOutlined v-if="collapsed" class="trigger" />
+      <IAntDesignMenuFoldOutlined v-else class="trigger" />
+    </div>
+    <AMenu
+      :openKeys="menuState.openKeys"
+      :selectedKeys="menuState.selectedKeys"
+      mode="inline"
+      @openChange="onOpenChange"
     >
-      <div v-if="collapsible" class="collapse-icon" @click="() => commonStore.setCollapsed(!collapsed)">
-        <IAntDesignMenuUnfoldOutlined v-if="collapsed" class="trigger" />
-        <IAntDesignMenuFoldOutlined v-else class="trigger" />
-      </div>
-      <AMenu v-model:openKeys="menuState.openKeys" v-model:selectedKeys="menuState.selectedKeys" mode="inline">
-        <template v-for="menu in menus || []" :key="menu.path || menu.name">
-          <template v-if="!menu.children">
-            <AMenuItem :key="menu.name">
-              <!-- <IAntDesignHomeOutlined /> -->
-              <template #icon v-if="menu.icon">
-                <CIcon :icon="menu.icon" :style="{ color: 'red' }" />
-                <!-- {{ getMenuIcon(menu.icon) }} -->
-                <!-- <AntdIcon type="DashboardOutlined" /> -->
-              </template>
-              {{ menu.title }}
-            </AMenuItem>
-          </template>
-          <template v-else>
-            <SubMenu :menu-info="menu" :key="menu.path" />
-          </template>
+      <template v-for="menu in menus || []" :key="menu.path || menu.name">
+        <template v-if="!menu.children">
+          <AMenuItem :key="menu.path" @click="menuItemClick(menu)">
+            <template #icon v-if="menu.icon">
+              <CIcon :icon="menu.icon" :style="{ color: 'red' }" />
+            </template>
+            {{ menu.title }}
+          </AMenuItem>
         </template>
-      </AMenu>
-    </Sider>
-  </div>
+        <template v-else>
+          <SubMenu :menu-info="menu" :key="menu.path" />
+        </template>
+      </template>
+    </AMenu>
+  </Sider>
 </template>
 
 <script lang="ts" setup>
-  import type { Menu } from 'src/hooks/useMenu';
-  import { KeepAlive, PropType } from 'vue';
+  import { getAllParentPath, Menu } from 'src/hooks/useMenu';
+  import { CSSProperties, PropType } from 'vue';
   import { useCommonStore } from 'src/store/modules/common';
   import { Layout } from 'ant-design-vue';
-  import * as $Icon from '@ant-design/icons-vue';
-  import SubMenu from './Submenu.vue';
-  import CIcon from 'src/components/icon/Icon.tsx';
+  import CIcon from 'src/components/icon/Icon';
+
+  interface MenuStateType {
+    defaultSelectedKeys: string[];
+    openKeys: string[];
+    selectedKeys: string[];
+    collapsedOpenKeys: string[];
+    width: number;
+  }
+
+  const router = useRouter();
+  const route = useRoute();
 
   const Sider = Layout.Sider;
   const DEFALUT_WIDTH = 230;
@@ -50,44 +53,71 @@
   const commonStore = useCommonStore();
   const collapsible = commonStore.getCollapsible;
   const collapsed = computed(() => commonStore.getCollapsed);
-  const hideHeader = computed(() => commonStore.hideHeader);
-
-  // const CSubMenu = defineComponent({
-  //   render() {
-  //     return h(SubMenu);
-  //   },
-  // });
+  const hideHeader = commonStore.getHideHeader;
 
   const siderState = reactive({
-    collapsedWidth: collapsible ? DEFALUT_WIDTH : 0,
     siderWidth: DEFALUT_WIDTH,
   });
 
-  const menuState = reactive({
-    selectedKeys: ['1'],
-    openKeys: ['sub1'],
+  const getStyle = computed((): CSSProperties => {
+    const height = hideHeader ? '100vh' : 'calc(100vh - 50px)';
+    return {
+      height,
+    };
+  });
+
+  const menuState = reactive<MenuStateType>({
+    defaultSelectedKeys: [],
+    openKeys: [],
+    selectedKeys: [],
+    collapsedOpenKeys: [],
     width: DEFALUT_WIDTH,
   });
 
-  // console.log('Icon', MenuIcon);
+  watch(
+    route,
+    (route) => {
+      menuState.selectedKeys = [route.fullPath];
+      menuState.openKeys = props.menus ? getAllParentPath(props.menus, route.fullPath) : [];
+    },
+    { immediate: true },
+  );
 
-  // function getMenuIcon(icon) {
-  //   return h($Icon[icon]);
-  // }
+  watch(
+    () => props.menus,
+    (menus) => {
+      if (!menus || menus.length === 0) {
+        menuState.openKeys = [];
+      } else {
+        menuState.openKeys = getAllParentPath(menus, route.fullPath);
+      }
+    },
+    { immediate: true },
+  );
 
-  // const { menus } = props;
-
-  console.log('menus', props.menus);
+  // 含有子集的菜单点击
+  function onOpenChange(openKeys) {
+    menuState.openKeys = openKeys;
+  }
+  // 末尾菜单点击
+  function menuItemClick(e) {
+    if (e.path) {
+      router.push(e.path);
+      menuState.selectedKeys = [e.path];
+    }
+  }
+  provide('menuItemClick', menuItemClick);
 </script>
 
 <style lang="less" scoped>
   .sider {
     overflow: auto;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
+    // height: 100vh;
+    // flex: ;
+    // position: fixed;
+    // left: 0;
+    // top: 0;
+    // bottom: 0;
     box-shadow: 5px 0 7px 1px rgb(204 217 234 / 31%);
     .collapse-icon {
       text-align: center;

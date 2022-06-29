@@ -13,6 +13,7 @@ const dashboard: AppRouteModule = {
     // 自定义 icon 'icon:***'  iconfont 中生成的， 'icon:svg|***' 本地 assets/icons 文件内的 svg
     icon: 'antd:HomeOutlined',
     title: '首页',
+    single: true,
   },
   children: [
     {

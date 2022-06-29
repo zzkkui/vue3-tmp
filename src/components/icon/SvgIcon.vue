@@ -2,25 +2,28 @@
 <template>
   <div class="anticon svg-icon" v-if="iconHref">
     <svg class="icon" aria-hidden="true" :style="style">
-      <use :xlink:href="iconHref" fill="#409EFF" />
+      <use :xlink:href="iconHref" :fill="color" />
     </svg>
   </div>
 </template>
 
 <script setup>
   import { computed } from 'vue';
-  import { createFromIconfontCN } from '@ant-design/icons-vue';
+  // import { createFromIconfontCN } from '@ant-design/icons-vue';
 
-  createFromIconfontCN({
-    // 内网情况下下载到本地
-    scriptUrl: '//at.alicdn.com/t/font_3432582_grev41s0tf.js', // 在 iconfont.cn 上生成
-  });
+  // createFromIconfontCN({
+  //   // 内网情况下下载到本地
+  //   scriptUrl: '//at.alicdn.com/t/font_3432582_grev41s0tf.js', // 在 iconfont.cn 上生成
+  // });
   const props = defineProps({
     type: {
       type: String,
     },
     style: {
       type: Object,
+    },
+    color: {
+      type: String,
     },
   });
 

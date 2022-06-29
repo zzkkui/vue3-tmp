@@ -1,12 +1,9 @@
 <template>
   <Layout>
     <LayoutHeader />
-    <Layout>
+    <Layout class="main">
       <LayoutSideBar :menus="menus" />
-      <Layout>
-        <!-- <LayoutContent /> -->
-        <RouterView></RouterView>
-      </Layout>
+      <LayoutContent />
     </Layout>
   </Layout>
 </template>
@@ -25,4 +22,8 @@
   const menus = useMenu(routes);
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  .main {
+    display: flex;
+  }
+</style>

@@ -23,6 +23,7 @@
     "@iconify/iconify": "^2.2.1",
     "ant-design-vue": "^3.2.4",
     "axios": "^0.27.2",
+    "good-storage": "^1.1.1",
     "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
     "pinia": "^2.0.14",

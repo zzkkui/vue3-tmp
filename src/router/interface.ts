@@ -7,6 +7,8 @@ export type Component<T = any> =
   | (() => Promise<T>);
 
 export interface CusRouteMeta extends RouteMeta {
+  // 是否为单级菜单
+  single?: boolean;
   title?: string;
   hideBreadcrumb?: boolean;
   hideMenu?: boolean;

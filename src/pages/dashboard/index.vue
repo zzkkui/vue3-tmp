@@ -5,15 +5,22 @@
     <SvgIcon type="weixiu" />
     <SvgIcon type="svg|banquan" />
     <IAntDesignAccountBookOutlined />
-    <ISvgYinSi style="font-size: 2em; fill: red" />
+    <AntdIcon
+      type="DashboardOutlined"
+      :style="{
+        color: 'red',
+      }"
+    />
+    <!-- <ISvgYinSi style="font-size: 2em; fill: red" /> -->
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+  import AntdIcon from 'src/components/icon/AntdIcon.tsx';
+</script>
 
 <style lang="less" scoped>
   .dashbord {
     position: relative;
-    left: 230px;
   }
 </style>

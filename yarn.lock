@@ -2854,6 +2854,11 @@
     "lodash" "~4.17.10"
     "minimatch" "~3.0.2"
 
+"good-storage@^1.1.1":
+  "integrity" "sha512-+0UEpRT03fJgEJoeTVVz41ISC5+jaQrDIWatQ4BoDQfOiBBsjNanymi9sAtLFdEAADQN0FYR8mGpeqxSCe8oXQ=="
+  "resolved" "https://registry.npmjs.org/good-storage/-/good-storage-1.1.1.tgz"
+  "version" "1.1.1"
+
 "graceful-fs@^4.1.2", "graceful-fs@^4.1.6", "graceful-fs@^4.2.0":
   "integrity" "sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA=="
   "resolved" "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.10.tgz"

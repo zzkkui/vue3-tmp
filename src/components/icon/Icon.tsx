@@ -1,4 +1,4 @@
-import AntdIcon from './AntdIcon.tsx';
+import AntdIcon from './AntdIcon';
 import SvgIcon from './SvgIcon.vue';
 
 const MenuIcon = (props) => {

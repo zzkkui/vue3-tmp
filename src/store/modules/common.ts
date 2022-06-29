@@ -17,7 +17,7 @@ interface CommonState {
 export const useCommonStore = defineStore({
   id: 'common',
   state: (): CommonState => ({
-    hideHeader: false,
+    hideHeader: true,
     hideBreadCrumb: true,
     collapsible: true,
     collapsed: false,

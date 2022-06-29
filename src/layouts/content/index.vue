@@ -1,28 +1,19 @@
 <template>
   <RouterView>
     <template #default="{ Component, route }">
-      <transition
-        :name="
-          getTransitionName({
-            route,
-            openCache,
-            enableTransition: getEnableTransition,
-            cacheTabs: getCaches,
-            def: getBasicTransition,
-          })
-        "
-        mode="out-in"
-        appear
-      >
-        <keep-alive v-if="openCache" :include="getCaches">
+      <div class="content">
+        <KeepAlive>
           <component :is="Component" :key="route.fullPath" />
-        </keep-alive>
-        <component v-else :is="Component" :key="route.fullPath" />
-      </transition>
+        </KeepAlive>
+      </div>
     </template>
   </RouterView>
 </template>
 
 <script setup></script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  .content {
+    flex: auto;
+  }
+</style>
