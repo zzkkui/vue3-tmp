@@ -68,6 +68,6 @@ module.exports = {
       },
     ],
     'vue/multi-word-component-names': 'off',
-    'vur/v-on-event-hyphenation': 'off',
+    'vue/v-on-event-hyphenation': 'off',
   },
 };
