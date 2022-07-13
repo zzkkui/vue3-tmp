@@ -28,23 +28,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           find: 'types',
           replacement: path.resolve(__dirname, './types'),
         },
-        {
-          find: 'node_modules',
-          replacement: path.resolve(__dirname, './node_modules'),
-        },
       ],
     },
     server: {
       host: true,
       port: 9001,
-      proxy: {
-        '/external': {
-          target: 'http://172.25.1.242:35232',
-        },
-        '/login': {
-          target: 'http://172.25.1.242:35232',
-        },
-      },
+      proxy: {},
     },
     esbuild: {
       pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
